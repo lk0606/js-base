@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="page">
+    <div class="content main">
+        <div class="refer">
+            <ul>
+                <li id="li">111</li>
+                <li>222</li>
+                …
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script src="./index.js"></script>
+<script>
+    window.name='window'
+    let arr = []
+    var genCssSelector = function(target){
+        // console.log(target, 'target')
+        // your code here
+
+        const tag = target.localName
+        if(arr.indexOf(tag)===-1) {
+            arr.unshift(tag)
+        }
+        if(target.parentNode && target.parentNode.tagName) {
+            const tagParent = target.parentNode.localName
+            if(arr.indexOf(tagParent)===-1) {
+                arr.unshift(tagParent)
+            }
+            genCssSelector(target.parentNode)
+        }
+        return arr
+    }
+
+    document.addEventListener('click', function(e){
+        //点击li时，打印出：html body #page .content.main .refer ul li
+        // console.log(e, 'e')
+        // genCssSelector(e.target)
+        console.log(genCssSelector(e.target), 'result');
+    })
+
+    // let opt = {
+    //     name: 'Amy',
+    //     name2: this.name,
+    //     fn() {
+    //         return this
+    //     },
+    //     fn1() {
+    //         setTimeout(function() {
+    //             console.log(this, 'setTimeout')
+    //         })
+    //     },
+    //     fn2() {
+    //         setTimeout(()=> {
+    //             console.log(this, '=>')
+    //         })
+    //     }
+    // }
+    // console.log(opt.name2, 'opt.name2')
+    // console.log(opt.fn, 'opt.fn')
+    // opt.fn1()
+    // opt.fn2()
+
+</script>
