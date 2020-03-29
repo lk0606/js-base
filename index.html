@@ -21,23 +21,23 @@
 <script src="./index.js"></script>
 <script>
     window.name='window'
-    let arr = []
+    let result = []
     var genCssSelector = function(target){
         // console.log(target, 'target')
         // your code here
 
         const tag = target.localName
-        if(arr.indexOf(tag)===-1) {
-            arr.unshift(tag)
+        if(result.indexOf(tag)===-1) {
+            result.unshift(tag)
         }
         if(target.parentNode && target.parentNode.tagName) {
             const tagParent = target.parentNode.localName
-            if(arr.indexOf(tagParent)===-1) {
-                arr.unshift(tagParent)
+            if(result.indexOf(tagParent)===-1) {
+                result.unshift(tagParent)
             }
             genCssSelector(target.parentNode)
         }
-        return arr
+        return result
     }
 
     document.addEventListener('click', function(e){

@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "parcel index.html"
+        "start": "parcel index.html",
+        "create": "hygen package with-prompt"
     },
     "repository": {
         "type": "git",
@@ -21,6 +22,7 @@
     "devDependencies": {
         "babel-core": "^6.26.3",
         "babel-preset-env": "^1.7.0",
+        "hygen": "^5.0.3",
         "parcel-bundler": "^1.12.4"
     }
 }
