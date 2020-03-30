@@ -49,6 +49,7 @@ function IPromise(resolve) {
             return
         }
         const result = callback.onFulfilled(value)
+        // console.log(callback.resolve, 'callback.resolve(result)')
         callback.resolve(result)
     }
 
@@ -75,18 +76,19 @@ function IPromise(resolve) {
     // console.log(resolve, _resolve, callbacks, 'callbacks')
 }
 
-let p = new Promise(resolve=> {
+let p = new IPromise(resolve=> {
     setTimeout(()=> {
         resolve('IPromise1')
     },100)
 })
     .then(d=> {
         console.log(d, 'then1')
-        return new Promise(res=> {
-            setTimeout(()=> {
-                res('IPromise2')
-            },100)
-        })
+        return 1
+        // return new IPromise(res=> {
+        //     setTimeout(()=> {
+        //         res('IPromise2')
+        //     },100)
+        // })
 })
     .then(d=> {
         console.log(d, 'then2')
