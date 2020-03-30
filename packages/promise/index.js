@@ -30,7 +30,7 @@ function IPromise(resolve) {
         callbacks = [];  //callbacks为数组，因为可能同时有很多个回调
 
     this.then = function (onFulfilled) {
-        // console.log(callbacks, 'callbacks then')
+        console.log(onFulfilled, 'onFulfilled then')
         return new IPromise(resolve=> {
             handle({
                 onFulfilled: onFulfilled || null,
@@ -75,13 +75,18 @@ function IPromise(resolve) {
     // console.log(resolve, _resolve, callbacks, 'callbacks')
 }
 
-let p = new IPromise(resolve=> {
+let p = new Promise(resolve=> {
     setTimeout(()=> {
-        resolve('IPromise')
+        resolve('IPromise1')
     },100)
 })
     .then(d=> {
         console.log(d, 'then1')
+        return new Promise(res=> {
+            setTimeout(()=> {
+                res('IPromise2')
+            },100)
+        })
 })
     .then(d=> {
         console.log(d, 'then2')
