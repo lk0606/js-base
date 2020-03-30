@@ -1,40 +1,28 @@
 
+// 资料参考 https://www.cnblogs.com/163yun/p/9505378.html
 
-class IPromise {
-    constructor(resolve) {
-        this.value = null
-        this.callbacks = []
-
-        resolve(this.resolve.bind(this))
-    }
-    then(onFulfilled) {
-        this.callbacks.push(onFulfilled);
-        console.log(this.callbacks, 'callbacks then')
-        return this
-    }
-    resolve(value) {
-        setTimeout(()=>{
-            this.callbacks.forEach(function (callback) {
-                callback(value);
-            })
-        })
-        console.log(this.callbacks, 'callbacks resolve')
-    }
-
-}
-
-function invoking(arg, timeSpace=100) {
-    return new Promise((resolve) => {
-        setTimeout(()=> {
-            resolve(arg)
-            console.log('invoking start')
-        }, timeSpace)
-    })
-}
-
-// invoking('test').then(d=> {
-//     console.log(d, 'invoking')
-// })
+// class IPromise {
+//     constructor(resolve) {
+//         this.value = null
+//         this.callbacks = []
+//
+//         resolve(this.resolve.bind(this))
+//     }
+//     then(onFulfilled) {
+//         this.callbacks.push(onFulfilled);
+//         console.log(this.callbacks, 'callbacks then')
+//         return this
+//     }
+//     resolve(value) {
+//         setTimeout(()=>{
+//             this.callbacks.forEach(function (callback) {
+//                 callback(value);
+//             })
+//         })
+//         console.log(this.callbacks, 'callbacks resolve')
+//     }
+//
+// }
 
 function IPromise(resolve) {
     let state = 'pending'
@@ -42,24 +30,46 @@ function IPromise(resolve) {
         callbacks = [];  //callbacks为数组，因为可能同时有很多个回调
 
     this.then = function (onFulfilled) {
+        // console.log(callbacks, 'callbacks then')
+        return new IPromise(resolve=> {
+            handle({
+                onFulfilled: onFulfilled || null,
+                resolve,
+            })
+        })
+    }
+
+    function handle(callback) {
         if(state==='pending') {
-            callbacks.push(onFulfilled);
-        } else if (state==='fulfilled') {
-            onFulfilled(value)
+            callbacks.push(callback)
+            return
         }
-        console.log(callbacks, 'callbacks then')
-        return this
-    };
+        if (!callback.onFulfilled) {
+            callback.resolve(value)
+            return
+        }
+        const result = callback.onFulfilled(value)
+        callback.resolve(result)
+    }
 
     function _resolve(newValue) {
+        // console.log(newValue, 'newValue')
+        if(newValue && (typeof newValue==='object' || typeof newValue==='function')) {
+            const then = newValue.then
+            if(typeof newValue.then === 'function') {
+                then.call(newValue, resolve)
+                return
+            }
+        }
         value = newValue
         state = 'fulfilled'
         setTimeout(function() {
             callbacks.forEach(function (callback) {
-                callback(value);
+                // callback(value);
+                handle(callback)
             });
         }, 0)
-        console.log(callbacks, 'callbacks _resolve')
+        // console.log(callbacks, 'callbacks _resolve')
     }
     resolve(_resolve)
     // console.log(resolve, _resolve, callbacks, 'callbacks')
@@ -71,10 +81,9 @@ let p = new IPromise(resolve=> {
     },100)
 })
     .then(d=> {
-    console.log(d, 'd')
+        console.log(d, 'then1')
 })
-//     .then(d=> {
-//     console.log(d, 'd111')
-// })
-// console.log(p, 'p')
+    .then(d=> {
+        console.log(d, 'then2')
+})
 console.log('end')
