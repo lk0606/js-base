@@ -3,6 +3,6 @@
 ---
 
 
-export function <%= name %>() {
+function <%= name %>() {
 
 }
