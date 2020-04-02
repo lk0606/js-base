@@ -35,11 +35,11 @@ export function getBirthdayFromIdCard(idCard) {
  * var time1 = Format("yyyy-MM-dd");
  * var time2 = Format("yyyy-MM-dd HH:mm:ss");
  */
-const format = function (fmt, timestamp) {
+export const format = function (timestamp, fmt = 'yyyy-MM-dd') {
     let date;
     if(timestamp!=null)
         timestamp = parseInt(timestamp)
-    date=new Date(timestamp);
+    date = new Date(timestamp);
     const o = {
         "M+": date.getMonth() + 1, //月份
         "d+": date.getDate(), //日
@@ -50,8 +50,8 @@ const format = function (fmt, timestamp) {
         "S": date.getMilliseconds() //毫秒
     };
     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    for (let k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
 

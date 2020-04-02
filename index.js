@@ -5,4 +5,5 @@
 // import * as throttle from './packages/throttle'
 // import * as dataType from './packages/data_type'
 // import './packages/prototype'
-import './packages/stack'
+// import './packages/stack'
+import './packages/utils'
