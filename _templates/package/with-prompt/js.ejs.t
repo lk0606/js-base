@@ -1,5 +1,6 @@
 ---
-    to: packages/<%= name %>/index.js
+to: packages/<%= name %>/index.js
+unless_exists: true
 ---
 
 

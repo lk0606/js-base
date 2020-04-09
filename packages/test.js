@@ -118,3 +118,13 @@ function walk(list) {
 }
 
 // console.log(walk(input))
+
+function customFlat(arr) {
+    return arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(this.customFlat(val)) : acc.concat(val), [])
+}
+function flatDeep(arr, d = 1) {
+    return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
+        : arr.slice();
+}
+const t = [1,2,[3,4]]
+// console.log(t.flat())
