@@ -7,3 +7,5 @@
 // import './packages/prototype'
 // import './packages/stack'
 import './packages/utils'
+import './packages/face'
+
