@@ -42,6 +42,7 @@ function IPromise(resolve) {
     function handle(callback) {
         if(state==='pending') {
             callbacks.push(callback)
+            // console.log(callbacks, 'callbacks')
             return
         }
         if (!callback.onFulfilled) {
@@ -49,21 +50,22 @@ function IPromise(resolve) {
             return
         }
         const result = callback.onFulfilled(value)
-        // console.log(callback.resolve, 'callback.resolve(result)')
+        // console.log(callback.resolve, result, 'callback.resolve(result)')
         callback.resolve(result)
     }
 
     function _resolve(newValue) {
-        // console.log(newValue, 'newValue')
+        console.log(newValue, 'newValue')
         if(newValue && (typeof newValue==='object' || typeof newValue==='function')) {
             const then = newValue.then
             if(typeof newValue.then === 'function') {
-                then.call(newValue, resolve)
+                then.call(newValue, _resolve)
                 return
             }
         }
         value = newValue
         state = 'fulfilled'
+        // console.log(callbacks, 'callbacks')
         setTimeout(function() {
             callbacks.forEach(function (callback) {
                 // callback(value);
@@ -78,19 +80,21 @@ function IPromise(resolve) {
 
 let p = new IPromise(resolve=> {
     setTimeout(()=> {
-        resolve('IPromise1')
+        resolve({
+            a:1
+        })
     },100)
 })
     .then(d=> {
         console.log(d, 'then1')
-        return 1
-        // return new IPromise(res=> {
-        //     setTimeout(()=> {
-        //         res('IPromise2')
-        //     },100)
-        // })
+        // return 1
+        return new IPromise(res=> {
+            setTimeout(()=> {
+                res('IPromise2')
+            },100)
+        })
 })
     .then(d=> {
         console.log(d, 'then2')
 })
-console.log('end')
+console.log(p, 'end')
