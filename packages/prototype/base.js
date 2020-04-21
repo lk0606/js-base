@@ -1,5 +1,27 @@
 
 /**
+ * @description Object.create 实现
+ * @param {object} prototype 
+ * @param {object} properties 
+ */
+function _create(prototype, properties) {
+    if (typeof prototype !== 'object' && typeof prototype !== 'function') {
+        throw new TypeError('Object prototype may only be an Object: ' + prototype);
+    } else if (prototype === null) {
+        throw new Error("This browser's implementation of Object.create is a shim and doesn't support 'null' as the first argument.");
+    }
+
+    // if (typeof properties != 'undefined') throw new Error("This browser's implementation of Object.create is a shim and doesn't support a second argument.");
+
+    function F() {}
+    F.prototype = prototype;
+    let o = new F()
+    if(properties) Object.defineProperties(o, properties)
+
+    return o
+}
+Object._create = _create
+/**
  * 在 call 方法中获取调用 call()函数
  * 如果第一个参数没有传入，那么默认指向 window/global(非严格模式)
  * 传入 call 的第一个参数是 this 指向的对象，根据隐式绑定的规则，我们知道 obj.foo(), foo() 中的 this 指向 obj;因此我们可以这样调用函数 thisArgs.func(...args)
@@ -49,7 +71,7 @@ function _new1(Constructor) {
     // 取出构造函数
     let constructor = args.shift();
     if(!constructor.prototype || !constructor.constructor) {
-        throw new Error('_new(Constructor): param Constructor is required and must be newed')
+        throw new Error('_new(Constructor): param Constructor is required and must be new')
     }
     // 创建一个空对象，继承构造函数的 prototype 属性
     let context = Object.create(constructor.prototype);
@@ -89,13 +111,29 @@ function test(a) {
 }
 // console.log(test._call({a:1}, 2, 1))
 // console.log(test._apply({a:1}, [2, 1]))
-function Hunman() {
-    this.name = 'Hunman'
+
+// es5 类的继承
+function Human() {
+	this.name = "Human"
+	Human.prototype.hi = function() {
+      	return 'hi Human'
+	}
+}
+
+function Student() {
+	this.name = 'Student'
+  	let p = Object._create(Human.prototype)
+  	console.log(p, 'p')
+  	Human.prototype = p
+    Object.setPrototypeOf(Student.prototype, Human.prototype) 
+    // Student.prototype.__proto__ = Human.prototype.__proto__ // 与上恒等
 }
 function eat(params) {
     return this.name + 'is eating'
 }
-Hunman.prototype.eat = eat
+Human.prototype.eat = eat
 
-console.log(_new1(Hunman), new Hunman())
-// console.log(_new1(), new Object())
+let h = new Human()
+let s = new Student()
+// console.log(_new1(Human), new Human())
+console.log(h, s)

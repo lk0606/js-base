@@ -18,6 +18,7 @@
     "bugs": {
         "url": "https://github.com/lk0606/js-base/issues"
     },
+    "type": "module",
     "homepage": "https://github.com/lk0606/js-base#readme",
     "devDependencies": {
         "babel-core": "^6.26.3",

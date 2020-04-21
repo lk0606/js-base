@@ -1,3 +1,29 @@
+// class Parent {
+//     constructor(options) {
+//         this.options = options
+//       	this._t = 't'
+//     }
+//   	eat() {
+// 		return 'eat'
+// 	}
+//   	static t1() {
+//       return 1
+// 	}
+  
+//   	t2() {
+//       return 1
+// 	}
+// }
+
+// class Child extends Parent {
+//  	constructor(props) {
+//       	super(props)
+    
+// 	}
+// }
+
+
+
 "use strict";
 
 function _typeof(obj) {
