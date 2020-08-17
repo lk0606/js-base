@@ -85,6 +85,7 @@ const isMoney = function (val){
  * @return    {Boolean}                			[true 是，false否]
  */
 const isPhone = function (val){
+    const reg = /^1(3|4|5|6|7|8|9)\d{9}$/
     if(!isNull(val)&& /^((\+86)|(86))?(1)\d{10}$/.test(val))
         return true;
     return false;
