@@ -129,3 +129,18 @@ const isCardNo = function (val) {
     var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
     return reg.test(val);
 }
+
+const buildInType = {
+    email: function email(value) {
+        return /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(value);
+    },
+    mobile: function mobile(value) {
+        return /^1(3|4|5|6|7|8|9)\d{9}$/.test(value);
+    },
+    bank: function bank(value) {
+        return /^([1-9]{1})(\d{14}|\d{18})$/.test(value);
+    },
+    idCard: function idCard(value) {
+        return /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(value);
+    }
+};
