@@ -11,8 +11,7 @@ const createStore = ()=> {
     }
     // 取消订阅
     const unSubscribe = (eventName)=> {
-        // TODO 优雅删除对象
-        delete store[eventName]
+        Reflect.deleteProperty(store, eventName)
     }
     // 发布 执行
     const dispatch = (eventName, val)=> {
